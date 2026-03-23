@@ -1,0 +1,48 @@
+services:
+auth_database:
+    image: postgres:16-alpine
+    container_name: auth_database
+    restart: always
+    env_file:
+      - .env.db
+  
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+    
+    networks:
+      - auth_network
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+auth_backend:
+    build:
+      context: ./auth
+  
+    container_name: auth
+
+    ports:
+      - "9999:9999"
+
+    restart: always
+
+    env_file:
+      - .env.authback
+    
+    depends_on:
+      auth_database:
+        condition: service_healthy
+
+    networks:
+      -  auth_network
+
+volumes:
+  auth_data: {}
+
+networks:
+  auth_network:
+    name: auth_network
+    driver: bridge

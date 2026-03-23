@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id      Int     @id @default(autoincrement())
+  name    String @unique
+  password    String
+  families Family[]
+}
+
+model Family {
+  id      Int     @id @default(autoincrement())
+  expiresAt DateTime
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshTokens Refresh[]
+}
+
+
+model Refresh {
+  id      Int     @id @default(autoincrement())
+  token String @unique
+  expiresAt DateTime
+  creationdate DateTime  @default(now())
+  current       Boolean  @default(true)
+
+  familyId  Int
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
