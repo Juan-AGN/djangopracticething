@@ -79,6 +79,21 @@ export async function invalidaterefresh(token: Refresh) {
 	return (family);
 }
 
+export async function consumerefreshtoken(token: string) {
+	const result = await prisma.refresh.updateMany({
+		where: {
+		token: token,
+		current: true,
+		expiresAt: { gt: new Date() }
+		},
+		data: {
+		current: false
+		}
+	});
+
+	return (result.count);
+}
+
 export async function getuniquerefreshtoken() {
 	let token = "";
 	let success = false;
@@ -256,13 +271,12 @@ app.post("/refresh", async (req: Request, res: Response) => {
 		if (truetoken.expiresAt.getTime() < Date.now())
 			return (res.status(400).json({ message: "Expired token." }))
 
-		if (truetoken.current !== true)
+		const consumed = await consumerefreshtoken(truetoken.token);
+		if (consumed === 0)
 		{
 			await cleanupfamily(truetoken.familyId);
 			return (res.status(400).json({ message: "Not valid token, reused token." }));
 		}
-
-		await invalidaterefresh(truetoken);
 
 		const family = await getfamily(truetoken);
 		if (family === undefined)
