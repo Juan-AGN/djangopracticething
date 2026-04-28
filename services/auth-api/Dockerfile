@@ -2,15 +2,15 @@ FROM node:20-bookworm
 
 WORKDIR /app
 
-COPY content/package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
-COPY content/prisma ./prisma
+COPY prisma ./prisma
 
 RUN apt-get update -y && apt-get install -y openssl
 
-COPY content/. ./
+COPY . .
 
 RUN npx prisma generate
 

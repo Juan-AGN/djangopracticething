@@ -20,7 +20,7 @@ services:
 
   auth_backend:
       build:
-        context: ./auth
+        context: ./services/auth-api
     
       container_name: auth
 

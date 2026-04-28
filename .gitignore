@@ -1,7 +1,14 @@
 node_modules
 
-.env
-
 generated
 
 dist
+
+**/node_modules
+**/dist
+**/generated
+
+.env
+**/.env
+**/.env.local
+**/.env.*.local
