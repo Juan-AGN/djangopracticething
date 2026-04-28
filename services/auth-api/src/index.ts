@@ -308,7 +308,7 @@ app.post("/refresh", async (req: Request, res: Response) => {
 });
 
 app.get("/users/:user", async (req: Request, res: Response) => {
-	let who: string = req.params.user;
+	let who = typeof req.params.user === "string" ? req.params.user :  req.params.user[0];
 
 	try {
 		let tuser = await getuser(who);

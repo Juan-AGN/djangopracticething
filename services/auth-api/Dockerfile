@@ -2,15 +2,15 @@ FROM node:20-bookworm
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ./services/auth-api/package*.json ./
+
+COPY packages ./packages
 
 RUN npm install
 
-COPY prisma ./prisma
+COPY ./services/auth-api/. .
 
 RUN apt-get update -y && apt-get install -y openssl
-
-COPY . .
 
 RUN npx prisma generate
 
