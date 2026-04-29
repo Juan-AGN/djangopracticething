@@ -1,3 +1,154 @@
 html {
-    background-color: beige;
+    background-color: #efefefff;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 15px;
 }
+body {
+    margin: 0;
+}
+
+#header {
+    width: 100vw;
+    height: 8vh;
+    top: 0;
+    left: 0;
+    background-color: #ffffffff;
+    margin-bottom: 10px;
+    display: flex;
+    box-shadow: 0px 2px 5px rgb(51, 51, 51);
+}
+
+#header div {
+    align-content: center;
+    text-align: center;
+    border-right-color: black;
+    border-right: solid 0.5px;
+    font-size: 20px;
+    width: 15vw;
+    transition: 100ms;
+}
+
+#header .logo {
+    position: fixed;
+    right: 0vw;
+    width: 20vw;
+    border-right: none;
+    text-shadow: 0px 0px 8px black;
+    color: rgb(0, 0, 0);
+    align-content: center;
+    text-align: center;
+    height: inherit;
+}
+
+input {
+    background-color: #efefefff;
+    border: none;
+    border-radius: 20px;
+    height: 3.5vh;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.submittext {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: inset 0px 0px 5px 0px rgb(56, 44, 57);
+}
+
+.link {
+    color: rgb(241, 71, 94);
+    text-decoration: underline;
+}
+
+.whitetext {
+    color: #ffffffff;
+}
+
+.typicaldiv {
+    background-color: #ffffffff;
+    border-radius: 20px;
+}
+
+.smallbutton, .submittext div {
+    background-color: #2d232eff;
+    color: #ffffffff;
+    text-align: center;
+    
+    width: 5vw;
+    height: 3.5vh;
+    border-radius: 20px;
+    align-content: center;
+    transition: 100ms;
+}
+
+.smallbutton:hover, .submittext div:hover {
+    background-color: rgb(56, 44, 57);
+}
+
+#header div:hover {
+    background-color: #efefefff;
+}
+
+#header .logo:hover {
+    background-color: white;
+}
+
+.smallbutton:active, .submittext div:active, #header div:active {
+    box-shadow: inset 5px 5px 1px 2px rgb(32, 25, 32);
+}
+
+#header .logo:active {
+    box-shadow: none;
+}
+
+.biggerbutton {
+    width: 10vw;
+    height: 3.5vh;
+}
+
+.submittext input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.submittext div {
+    width: 2.5vw;
+    height: 3.7vh;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+@media (max-width: 1000px), (max-height: 500px){
+    html {
+        font-size: 10px;
+    }
+
+    .typicaldiv, input, .smallbutton {
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 500px), (max-height: 500px){
+    html {
+        font-size: 8px;
+    }
+
+    .typicaldiv, input, .smallbutton {
+        border-radius: 4px;
+    }
+}
+
+/* CSS HEX 
+--white: --ffffffff
+--litthe dark white: #efefefff
+--gunmetal: #474448ff;
+--shadow-grey: #2d232eff;
+--bone: #e0ddcfff;
+--taupe-grey: #534b52ff;
+--parchment: #f1f0eaff;
+*/

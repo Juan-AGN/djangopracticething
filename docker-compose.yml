@@ -22,23 +22,39 @@ services:
       build:
         context: ./
         dockerfile: ./services/auth-api/Dockerfile
-    
       container_name: auth
-
-      ports:
-        - "9999:9999"
-
       restart: always
-
       env_file:
         - .env
-      
       depends_on:
         auth_database:
           condition: service_healthy
-
       networks:
         -  auth_network
+        -  img_network
+        -  nginx_network
+
+  img_backend:
+      build:
+        context: ./
+        dockerfile: ./services/img-api/Dockerfile
+      container_name: imgs
+      restart: always
+      volumes:
+        - ./img:/app/img
+      networks:
+      -  img_network
+      -  nginx_network
+
+  web:
+    image: nginx
+    ports:
+      -  "8899:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    command: [nginx-debug, '-g', 'daemon off;']
+    networks:
+      - nginx_network
 
 volumes:
   auth_data: {}
@@ -46,4 +62,10 @@ volumes:
 networks:
   auth_network:
     name: auth_network
+    driver: bridge
+  img_network:
+    name: img_network
+    driver: bridge
+  nginx_network:
+    name: nginx_network
     driver: bridge

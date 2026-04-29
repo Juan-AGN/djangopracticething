@@ -187,11 +187,11 @@ app.use(express.json());
 
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-	return (res.send({ message: "Scores Service Running" }));
+app.get("/api/auth/", (req: Request, res: Response) => {
+	return (res.send({ message: "Auth Service Running" }));
 });
 
-app.post("/register", async (req: Request, res: Response) => {
+app.post("/api/auth/register", async (req: Request, res: Response) => {
 	const { user, password } = req.body;
 
 	if (password == "" || password == undefined || user == undefined || user == "")
@@ -200,7 +200,7 @@ app.post("/register", async (req: Request, res: Response) => {
 		const existingUser = await getuser(user);
 
 		if (!existingUser)
-			await prisma.user.create({data: { name: user, password: generateHash(password + salt) },});
+			await prisma.user.create({data: { name: user, password: generateHash(password + salt)}});
 	} catch (err) {
 		console.error("Error creating user:", err);
 		return (res.status(400).json({ message: "Unknown error." }));
@@ -208,7 +208,7 @@ app.post("/register", async (req: Request, res: Response) => {
 	return (res.send("User succesfully created."));
 });
 
-app.post("/log", async (req: Request, res: Response) => {
+app.post("/api/auth/log", async (req: Request, res: Response) => {
 	const { user, password } = req.body;
 
 	if (password == "" || password == undefined || user == undefined || user == "")
@@ -248,7 +248,7 @@ app.post("/log", async (req: Request, res: Response) => {
 	}
 });
 
-app.post("/refresh", async (req: Request, res: Response) => {
+app.post("/api/auth/refresh", async (req: Request, res: Response) => {
 	const { user } = req.body;
 	const prevToken = req.cookies.refreshToken;
 
@@ -307,7 +307,7 @@ app.post("/refresh", async (req: Request, res: Response) => {
 	}
 });
 
-app.get("/users/:user", async (req: Request, res: Response) => {
+app.get("/api/auth/users/:user", async (req: Request, res: Response) => {
 	let who = typeof req.params.user === "string" ? req.params.user :  req.params.user[0];
 
 	try {

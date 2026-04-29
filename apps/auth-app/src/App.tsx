@@ -5,10 +5,11 @@ import { Login } from "./login/login";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
       <Routes>
-        <Route path="/" element={<Navigate to="/Login"/>}/>
-        <Route path="/login" element={<Login />} />
+        <Route path="/auth/" element={<User/>}/>
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );
