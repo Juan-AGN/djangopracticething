@@ -1,14 +1,20 @@
 {
   "name": "@repo/ui",
   "version": "1.0.0",
+  "scripts": {
+    "build": "tsc & cp -r src/css dist/css",
+    "dev": "tsc --watch "
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "dependencies": {
     "clsx": "^2.0.0"
   },
   "peerDependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
-  },
-  "exports": {
-    ".": "./src/index.ts"
   }
 }

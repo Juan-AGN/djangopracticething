@@ -4,7 +4,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "services/*"
+    "services/*",
+    "packages/*"
   ],
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -12,6 +13,8 @@
     "@types/node": "^25.6.0"
   },
   "dependencies": {
-    "cors": "^2.8.6"
+    "cors": "^2.8.6",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   }
 }

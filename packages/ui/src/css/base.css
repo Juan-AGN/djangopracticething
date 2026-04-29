@@ -3,11 +3,15 @@ html {
     font-family:'Times New Roman', Times, serif;
     font-size: 15px;
 }
+
 body {
     margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
 #header {
+    position: fixed;
     width: 100vw;
     height: 8vh;
     top: 0;
@@ -86,6 +90,11 @@ input:focus {
     transition: 100ms;
 }
 
+.gradiant {
+    background: #EFEFEFFF;
+    background: radial-gradient(circle,rgba(239, 239, 239, 1) 0%, rgba(239, 239, 239, 1) 50%, rgba(71, 68, 72, 1) 100%);
+}
+
 .smallbutton:hover, .submittext div:hover {
     background-color: rgb(56, 44, 57);
 }
@@ -121,6 +130,21 @@ input:focus {
     height: 3.7vh;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+.lonediv {
+    height: 80vh;
+    width: 80vw;
+    margin: auto;
+    padding-top: 8vh;
+    align-content: center;
+}
+
+.title {
+    font-size: xx-large;  
+    margin: auto;
+    font-weight: bold;
+    text-align: center;
 }
 
 @media (max-width: 1000px), (max-height: 500px){

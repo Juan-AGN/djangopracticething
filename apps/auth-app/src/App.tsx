@@ -7,12 +7,15 @@ function App() {
   return (
     <BrowserRouter> 
       <Routes>
-        <Route path="/auth/" element={<User/>}/>
+        <Route path="/auth/" element={<Navigate to="/auth/login" replace />}/>
         <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
+
       </Routes>
     </BrowserRouter>
   );
 }
 
+/*        <Route path="/auth/user/:user" element={<User/>}/>
+        
+        <Route path="/auth/register" element={<Register />} /> */
 export default App;

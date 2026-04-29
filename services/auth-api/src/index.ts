@@ -201,6 +201,8 @@ app.post("/api/auth/register", async (req: Request, res: Response) => {
 
 		if (!existingUser)
 			await prisma.user.create({data: { name: user, password: generateHash(password + salt)}});
+		else
+			return (res.status(400).json({ message: "Duplicate user." }));
 	} catch (err) {
 		console.error("Error creating user:", err);
 		return (res.status(400).json({ message: "Unknown error." }));
@@ -303,6 +305,41 @@ app.post("/api/auth/refresh", async (req: Request, res: Response) => {
 		return (res.json({message: "Token succesfully refreshed.", user: user}));
 	} catch (err) {
 		console.error("Error logging user:", err);
+		return (res.status(400).json({ message: "Unknown error." }));
+	}
+});
+
+app.post("/api/auth/validate", async (req: Request, res: Response) => {
+	const { user } = req.body;
+	const token = req.cookies.accessToken;
+
+	if (user == undefined || user == "")
+		return (res.status(400).json({ message: "Empty user not allowed." }));
+	try {
+		const existingUser = await getuser(user);
+
+		if (!existingUser)
+			return (res.status(400).json({ message: "Not valid user." }));
+
+		if (!token || typeof token !== "string")
+			return (res.status(400).json({ message: "Not valid token." }));
+
+		const tokenarray = tokenmap.get(user);
+	
+		if (tokenarray == undefined)
+			return (res.status(400).json({ message: "Not valid user." }));
+
+		const truetoken = tokenarray.find(ttoken => ttoken.token === token);
+
+		if (truetoken == undefined)
+			return (res.status(400).json({ message: "Not valid token." }));
+
+		if (truetoken.enddate.getTime() < Date.now())
+			return (res.status(400).json({ message: "Not valid token." }))
+
+		return (res.json({message: "Nice token.", user: user}));
+	} catch (err) {
+		console.error("Error doing token things:", err);
 		return (res.status(400).json({ message: "Unknown error." }));
 	}
 });
