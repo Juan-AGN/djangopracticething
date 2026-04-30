@@ -16,16 +16,17 @@ body {
     height: 8vh;
     top: 0;
     left: 0;
-    background-color: #ffffffff;
+    background-color: #534b52ff;
     margin-bottom: 10px;
     display: flex;
+    color: white;
     box-shadow: 0px 2px 5px rgb(51, 51, 51);
 }
 
 #header div {
     align-content: center;
     text-align: center;
-    border-right-color: black;
+    border-right-color: #efefefff;
     border-right: solid 0.5px;
     font-size: 20px;
     width: 15vw;
@@ -38,19 +39,21 @@ body {
     width: 20vw;
     border-right: none;
     text-shadow: 0px 0px 8px black;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     align-content: center;
     text-align: center;
     height: inherit;
 }
 
 input {
-    background-color: #efefefff;
+    background-color: #534b52ff;
     border: none;
+    color: white;
     border-radius: 20px;
     height: 3.5vh;
     padding-left: 5px;
     padding-right: 5px;
+    transition: 300ms;
 }
 
 .submittext {
@@ -60,8 +63,9 @@ input {
 }
 
 input:focus {
+    background-color: #474448ff;
     outline: none;
-    box-shadow: inset 0px 0px 5px 0px rgb(56, 44, 57);
+    box-shadow: inset 0px 0px 8px 2px rgb(32, 25, 32);
 }
 
 .link {
@@ -76,31 +80,26 @@ input:focus {
 .typicaldiv {
     background-color: #ffffffff;
     border-radius: 20px;
+    box-shadow: 1px 1px 6px 2px #474448ff;
 }
 
 .smallbutton, .submittext div {
-    background-color: #2d232eff;
+    background-color: #534b52ff;
     color: #ffffffff;
     text-align: center;
-    
     width: 5vw;
     height: 3.5vh;
     border-radius: 20px;
     align-content: center;
-    transition: 100ms;
-}
-
-.gradiant {
-    background: #EFEFEFFF;
-    background: radial-gradient(circle,rgba(239, 239, 239, 1) 0%, rgba(239, 239, 239, 1) 50%, rgba(71, 68, 72, 1) 100%);
+    transition: 300ms;
 }
 
 .smallbutton:hover, .submittext div:hover {
-    background-color: rgb(56, 44, 57);
+    background-color: #474448ff;
 }
 
 #header div:hover {
-    background-color: #efefefff;
+    background-color: #474448ff;
 }
 
 #header .logo:hover {
@@ -125,6 +124,11 @@ input:focus {
     border-bottom-right-radius: 0;
 }
 
+.gradiant {
+    background: #EFEFEFFF;
+    background: radial-gradient(circle,rgba(239, 239, 239, 1) 0%, rgba(239, 239, 239, 1) 50%, rgba(71, 68, 72, 1) 100%);
+}
+
 .submittext div {
     width: 2.5vw;
     height: 3.7vh;
@@ -147,6 +151,15 @@ input:focus {
     text-align: center;
 }
 
+.logindiv {
+    width: 800px;
+    margin: auto;
+}
+
+.logininput {
+    width: 750px;
+}
+
 @media (max-width: 1000px), (max-height: 500px){
     html {
         font-size: 10px;
@@ -155,6 +168,8 @@ input:focus {
     .typicaldiv, input, .smallbutton {
         border-radius: 8px;
     }
+
+
 }
 
 @media (max-width: 500px), (max-height: 500px){
@@ -164,6 +179,30 @@ input:focus {
 
     .typicaldiv, input, .smallbutton {
         border-radius: 4px;
+    }
+
+    .logindiv {
+        width: 400px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .logindiv {
+        width: 500px;
+    }
+
+    .logininput {
+        width: 450px;
+    }
+}
+
+@media (max-width: 600px) {
+   .logindiv {
+        width: 300px;
+    }
+
+    .logininput {
+        width: 250px;
     }
 }
 
