@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import "@repo/ui";
-import { Header } from '@repo/ui';
+import { Header, useInit } from '@repo/ui';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const domain = window.location.hostname;
 
 export function Login() {
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
-        useEffect ( ()=> {
+
+    useInit ( ()=> {
         const saved = localStorage.getItem("username");
+        console.log(saved);
 
         if (!saved)
             return ;
@@ -19,13 +23,49 @@ export function Login() {
         const response = fetch(`http://${domain}:8899/api/auth/refresh`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
+                    credentials: "include",
                     body: JSON.stringify({ user: saved  })
         }).then( response => {
             if (response.ok)
                 navigate(`/auth/user/${saved}`);
-        })
-    }, [])
+        });
+        console.log("REFRESH CALLED");
+    });
 
+	const handleChange = (e: any) => {
+		const { name, value } = e.target;
+
+        if (name == "logininp")
+            setName(value);
+        else if (name == "passwordinp")
+            setPassword(value);
+	};
+
+	const handleSubmit = async () => {
+        if (name === "" || password === "")
+            return ;
+
+        const response = await fetch(`http://${domain}:8899/api/auth/log`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ user: name, password: password  })
+        });
+            
+        if (response.ok)
+        {
+            localStorage.setItem("username", name);
+            navigate(`/auth/user/${name}`);
+        }
+        else
+        {
+            const data = await response.json();
+            if (!data.message)
+                setError("Invalid credentials");
+            else
+                setError(data.message);
+        }
+	};
 
 
     return (
@@ -39,16 +79,15 @@ export function Login() {
                 
                 <p style={{ margin: 'auto', textAlign:'center', fontSize:'large'}}>Username:</p>
                 <div style={{ margin: 'auto', width: 'fit-content' }}>
-                    <input className="logininput" style={{ fontSize:'medium', minHeight: 20, textAlign: 'center' }}></input>
+                    <input name="logininp" onChange={handleChange} className="logininput" style={{ fontSize:'medium', minHeight: 20, textAlign: 'center' }}></input>
                 </div>
                 <br></br><br></br>
                 <p style={{ margin: 'auto', textAlign:'center', fontSize:'large'}}>Password:</p>
                 <div style={{ margin: 'auto', width: 'fit-content' }}>
-                    <input className="logininput" style={{ WebkitTextSecurity:'disc', fontSize:'medium', minHeight: 20, textAlign: 'center'}}></input>
+                    <input name="passwordinp" onChange={handleChange} className="logininput" style={{ WebkitTextSecurity:'disc', fontSize:'medium', minHeight: 20, textAlign: 'center'}}></input>
                 </div>
                 <br></br><br></br>
-                <div className='smallbutton biggerbutton' style={{ margin: 'auto', textAlign:'center', fontSize:'large', padding: 10, width:'fit-content', height:'fit-content'}}>LOGIN</div>
-                <br></br>
+                <div onClick={handleSubmit} className='smallbutton biggerbutton' style={{ margin: 'auto', textAlign:'center', fontSize:'large', padding: 10, width:'fit-content', height:'fit-content'}}>LOGIN</div>
                 {error !== "" && 
                     <>
                     <p style={{ textAlign: 'center', color:'red'}}>ERROR: {error}</p>

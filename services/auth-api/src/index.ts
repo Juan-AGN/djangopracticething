@@ -173,6 +173,12 @@ export async function createfamily(user: User) {
 	return (family);
 }
 
+export async function getlatesttoken(family: number) {
+	let refreshtoken = await prisma.refresh.findFirst({where: {familyId: family, current: true}});
+
+	return (refreshtoken);
+}
+
 export async function autoclean(time: number) {
 	await cleanupactokens();
 	await cleanupretokens();
@@ -185,7 +191,20 @@ export async function autoclean(time: number) {
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+    origin: (origin: any, callback: any) => {
+        if (!origin) return callback(null, true); 
+
+        const allowed = /^http:\/\/(localhost|10\.1\d\.\d{1,2}\.[1-9])(:\d{1,5})?$/
+
+        if (allowed.test(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true
+}));
 
 app.get("/api/auth/", (req: Request, res: Response) => {
 	return (res.send({ message: "Auth Service Running" }));
@@ -227,10 +246,13 @@ app.post("/api/auth/log", async (req: Request, res: Response) => {
 		const refreshtoken = await createrefreshtoken(family);
 		const accesstoken = await createaccess(user);
 
+		res.clearCookie("accessToken");
+		res.clearCookie("refreshToken");
+
 		res.cookie("refreshToken", refreshtoken.token, {
 			httpOnly: true,
 			secure: false,
-			sameSite: "strict",
+			sameSite: "lax",
 			maxAge: refreshtoken.expiresAt.getTime() - Date.now(),
 			path: "/",
 		});
@@ -238,7 +260,7 @@ app.post("/api/auth/log", async (req: Request, res: Response) => {
 		res.cookie("accessToken", accesstoken , {
 			httpOnly: true,
 			secure: false,
-			sameSite: "strict",
+			sameSite: "lax",
 			maxAge: 15 * 60 * 1000,
 			path: "/",
 		});
@@ -286,10 +308,13 @@ app.post("/api/auth/refresh", async (req: Request, res: Response) => {
 		const refreshtoken = await createrefreshtoken(family!);
 		const accesstoken = await createaccess(user);
 
+		res.clearCookie("accessToken");
+		res.clearCookie("refreshToken");
+
 		res.cookie("refreshToken", refreshtoken.token, {
 			httpOnly: true,
 			secure: false,
-			sameSite: "strict",
+			sameSite: "lax",
 			maxAge: refreshtoken.expiresAt.getTime() - Date.now(),
 			path: "/",
 		});
@@ -297,7 +322,7 @@ app.post("/api/auth/refresh", async (req: Request, res: Response) => {
 		res.cookie("accessToken", accesstoken , {
 			httpOnly: true,
 			secure: false,
-			sameSite: "strict",
+			sameSite: "lax",
 			maxAge: 15 * 60 * 1000,
 			path: "/",
 		});
